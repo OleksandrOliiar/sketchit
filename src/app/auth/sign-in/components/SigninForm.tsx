@@ -13,6 +13,8 @@ import {
   FormMessage,
   Input,
 } from "@/ui";
+import { signin } from "../actions/signin";
+import { toast } from "sonner";
 
 export default function SigninForm() {
   const form = useForm<AuthFields>({
@@ -24,8 +26,18 @@ export default function SigninForm() {
   });
 
   async function onSubmit(data: AuthFields) {
-    console.log({ data });
+    const { success, error } = await signin(data);
+
+    if (success) {
+      toast.success("Signed in successfully");
+      form.reset();
+      return;
+    }
+
+    toast.error(error);
   }
+
+  const { isSubmitting } = form.formState;
 
   return (
     <Form {...form}>
@@ -59,7 +71,7 @@ export default function SigninForm() {
             </FormItem>
           )}
         />
-        <Button>Sign in with email</Button>
+        <Button disabled={isSubmitting}>Sign in with email</Button>
       </form>
     </Form>
   );

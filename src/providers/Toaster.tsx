@@ -1,5 +1,5 @@
 import { Toaster as ToasterUI } from "@/ui";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 export default function Toaster() {
   return (
@@ -8,6 +8,11 @@ export default function Toaster() {
         success: (
           <div className="mr-2 flex h-7 w-7 items-center justify-center rounded-full bg-primary">
             <CheckIcon className="h-5 w-5 text-[#f8f8f7]" />
+          </div>
+        ),
+        error: (
+          <div className="mr-2 flex h-7 w-7 items-center justify-center rounded-full bg-destructive">
+            <Cross2Icon className="h-5 w-5 text-[#f8f8f7]" />
           </div>
         ),
       }}
