@@ -8,7 +8,7 @@ import {
   DotFilledIcon,
 } from "@radix-ui/react-icons";
 
-import { cn } from "@/common/utils";
+import { cn } from "@/common/utils/cn";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
