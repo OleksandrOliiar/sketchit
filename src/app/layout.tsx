@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/providers";
+import { Header } from "./components/Header";
 
 import "./globals.css";
-import { Header } from "./components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +21,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <Header />
-          <div className="overflow-hidden">{children}</div>
+          <div>
+            <Header />
+            <main>{children}</main>
+          </div>
         </Providers>
       </body>
     </html>
