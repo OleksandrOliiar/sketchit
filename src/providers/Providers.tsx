@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import { ThemeProvider } from "./Theme";
+import Toaster from "./Toaster";
 
 export function Providers({ children }: PropsWithChildren) {
   return (
@@ -10,6 +11,7 @@ export function Providers({ children }: PropsWithChildren) {
       disableTransitionOnChange
     >
       {children}
+      <Toaster />
     </ThemeProvider>
   );
 }

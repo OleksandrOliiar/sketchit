@@ -1,4 +1,5 @@
-import { SignupForm, GithubButton } from "../components";
+import { GithubButton } from "../components";
+import { SignupForm } from "./components";
 
 export default function SignUp() {
   return (
