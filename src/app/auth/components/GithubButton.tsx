@@ -1,5 +1,6 @@
 import { Button } from "@/ui";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function GithubButton() {
   return (
@@ -14,9 +15,11 @@ export default function GithubButton() {
           </span>
         </div>
       </div>
-      <Button variant="secondary" className="w-full">
-        <GitHubLogoIcon className="mr-2 h-4 w-4" /> Github
-      </Button>
+      <Link href="/auth/github">
+        <Button variant="secondary" className="w-full">
+          <GitHubLogoIcon className="mr-2 h-4 w-4" /> Github
+        </Button>
+      </Link>
     </>
   );
 }

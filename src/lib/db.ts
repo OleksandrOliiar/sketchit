@@ -6,6 +6,7 @@ import { text, pgTable, timestamp } from "drizzle-orm/pg-core";
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   username: text("username").notNull().unique(),
+  github_id: text("github_id").unique(),
   hashed_password: text("hashed_password").notNull(),
 });
 
