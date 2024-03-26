@@ -4,3 +4,7 @@ export * from "./Label";
 export * from "./Form";
 export * from "./Input";
 export * from "./Toaster";
+export * from "./ToggleGroup";
+export * from "./Slider";
+export * from "./Tooltip";
+export * from "./Select";

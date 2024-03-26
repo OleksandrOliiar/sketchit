@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function Logo() {
   return (
     <Link href="/">
-      <h3>
+      <h2 className="font-bold">
         Sketch<span className="text-primary">IT</span>
-      </h3>
+      </h2>
     </Link>
   );
 }

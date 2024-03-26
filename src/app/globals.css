@@ -85,3 +85,7 @@ p {
 .app-container {
   @apply mx-auto max-w-7xl px-4 md:px-8;
 }
+
+input[type="color"]::-webkit-color-swatch {
+  @apply rounded-md border-none p-0;
+}
