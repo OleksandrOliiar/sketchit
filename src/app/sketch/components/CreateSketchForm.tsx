@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { ReactSketchCanvasRef } from "react-sketch-canvas";
 import Canvas from "./Canvas";
 import { createSketchFields, createSketchSchema } from "../validations/sketch";
+import { createSketch } from "../actions/createSketch";
 
 export default function CreateSketchForm() {
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
@@ -36,8 +37,14 @@ export default function CreateSketchForm() {
   });
 
   async function onSubmit(data: createSketchFields) {
+    if (!canvasRef.current) return;
+    const image = await canvasRef.current.exportImage("jpeg");
 
+    const result = await createSketch({ ...data, image });
+    console.log({ result });
   }
+
+  const { isSubmitting } = form.formState;
 
   return (
     <Form {...form}>
@@ -68,18 +75,18 @@ export default function CreateSketchForm() {
           control={form.control}
           name="numOutputs"
           render={({ field }) => (
-            <FormItem className="mb-5 max-w-[300px]">
+            <FormItem className="mb-5">
               <FormLabel>Number of images</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(+value)}
                 defaultValue="1"
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="max-w-[125px]">
                     <SelectValue placeholder="Select a verified email to display" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="max-w-[125px]">
                   <SelectItem value="1">1</SelectItem>
                   <SelectItem value="2">2</SelectItem>
                   <SelectItem value="3">3</SelectItem>
@@ -98,7 +105,11 @@ export default function CreateSketchForm() {
               <FormItem className="basis-[300px]">
                 <FormLabel>Width</FormLabel>
                 <FormControl>
-                  <Input type="number" {...field} />
+                  <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(+e.target.value)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -111,14 +122,27 @@ export default function CreateSketchForm() {
               <FormItem className="basis-[300px]">
                 <FormLabel>Height</FormLabel>
                 <FormControl>
-                  <Input {...field} type="number" />
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(+e.target.value)}
+                    type="number"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <Button size="lg">Generate</Button>
+        <div className="flex items-center gap-5">
+          <Button size="lg" disabled={isSubmitting}>
+            Generate
+          </Button>
+          {isSubmitting && (
+            <span className="text-sm text-muted-foreground">
+              (This may take a few seconds)
+            </span>
+          )}
+        </div>
       </form>
     </Form>
   );

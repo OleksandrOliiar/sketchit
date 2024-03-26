@@ -1,6 +1,6 @@
 import { generateState } from "arctic";
-import { github } from "@/lib/github";
 import { cookies } from "next/headers";
+import { github } from "./lib/github";
 
 export async function GET(): Promise<Response> {
   const state = generateState();

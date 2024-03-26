@@ -1,9 +1,9 @@
 import { lucia } from "@/lib/auth";
-import { github } from "@/lib/github";
 import { db, user } from "@/lib/db";
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
+import { github } from "../lib/github";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
