@@ -16,8 +16,8 @@ export default async function Header() {
           <ModeToggle />
           {user ? (
             <>
-              <Link href="/sketch">
-                <Button>Sketch</Button>
+              <Link href="/generate">
+                <Button>Generate</Button>
               </Link>
               <form action={signout}>
                 <Button variant="secondary">Sign out</Button>

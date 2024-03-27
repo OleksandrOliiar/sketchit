@@ -21,6 +21,16 @@ export const session = pgTable("session", {
   }).notNull(),
 });
 
+export const sketch = pgTable("sketch", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  prompt: text("prompt"),
+  results: text("results").array(4),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 const sql = neon(env.DATABASE_URL);
 
-export const db = drizzle(sql, { schema: { user, session } });
+export const db = drizzle(sql, { schema: { user, session, sketch } });

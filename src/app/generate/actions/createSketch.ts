@@ -3,6 +3,9 @@
 import { z } from "zod";
 import { createSketchSchema } from "../validations/sketch";
 import { replicate } from "../lib/replicate";
+import { generateId } from "lucia";
+import { db, sketch } from "@/lib/db";
+import { getUser } from "@/common/utils/auth";
 
 const schema = createSketchSchema.merge(
   z.object({
@@ -22,7 +25,10 @@ export const createSketch = async (data: Props) => {
   const { prompt, height, width, image, numOutputs } = parsed.data;
 
   try {
-    const output = await replicate.run(
+    const { user } = await getUser();
+    if (!user) throw new Error("Anuthorized");
+
+    const output = (await replicate.run(
       "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
       {
         input: {
@@ -36,9 +42,16 @@ export const createSketch = async (data: Props) => {
           num_inference_steps: 25,
         },
       },
-    );
+    )) as string[];
 
-    console.log({ output });
+    const sketchId = generateId(15);
+
+    await db.insert(sketch).values({
+      id: sketchId,
+      prompt,
+      results: output,
+      userId: user.id,
+    });
 
     return { success: true };
   } catch (error) {
