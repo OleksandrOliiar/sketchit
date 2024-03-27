@@ -1,6 +1,6 @@
 import { getUser } from "@/common/utils/auth";
 import { redirect } from "next/navigation";
-import { getUserSketches } from "./actions/getUserSketches";
+import { getUserSketches } from "./actions";
 import { SketchCard } from "./components";
 
 export default async function Collection() {

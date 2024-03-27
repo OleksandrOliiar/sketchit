@@ -21,9 +21,12 @@ import { useForm } from "react-hook-form";
 import { ReactSketchCanvasRef } from "react-sketch-canvas";
 import Canvas from "./Canvas";
 import { createSketchFields, createSketchSchema } from "../validations/sketch";
-import { createSketch } from "../actions/createSketch";
+import { createSketch } from "../actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function CreateSketchForm() {
+  const router = useRouter();
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
 
   const form = useForm<createSketchFields>({
@@ -38,10 +41,18 @@ export default function CreateSketchForm() {
 
   async function onSubmit(data: createSketchFields) {
     if (!canvasRef.current) return;
-    const image = await canvasRef.current.exportImage("jpeg");
 
+    const image = await canvasRef.current.exportImage("jpeg");
     const result = await createSketch({ ...data, image });
-    console.log({ result });
+
+    if (result.success) {
+      toast.success("Generated successfully");
+      form.reset();
+      router.push("/collection");
+      return;
+    }
+
+    toast.error("Failed to generate");
   }
 
   const { isSubmitting } = form.formState;

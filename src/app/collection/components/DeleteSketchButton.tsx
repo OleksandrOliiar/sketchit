@@ -16,14 +16,33 @@ import {
   TooltipTrigger,
 } from "@/ui";
 import { TrashIcon } from "@radix-ui/react-icons";
+import { useState, useTransition } from "react";
+import { deleteSketch } from "../actions";
+import { toast } from "sonner";
 
 type Props = {
   sketchId: string;
 };
 
 export default function DeleteSketchButton({ sketchId }: Props) {
+  const [isPending, startTransition] = useTransition();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleDelete = () =>
+    startTransition(async () => {
+      const result = await deleteSketch(sketchId);
+
+      if (result.success) {
+        toast.success("Deleted successfully");
+        setIsOpen(false);
+        return;
+      }
+
+      toast.error("Failed to delete");
+    });
+
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -46,7 +65,13 @@ export default function DeleteSketchButton({ sketchId }: Props) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button variant="destructive">Delete</Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isPending}
+          >
+            Delete
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

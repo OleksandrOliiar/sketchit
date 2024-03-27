@@ -6,6 +6,7 @@ import { replicate } from "../lib/replicate";
 import { generateId } from "lucia";
 import { db, sketch } from "@/lib/db";
 import { getUser } from "@/common/utils/auth";
+import { revalidateTag } from "next/cache";
 
 const schema = createSketchSchema.merge(
   z.object({
@@ -52,6 +53,8 @@ export const createSketch = async (data: Props) => {
       results: output,
       userId: user.id,
     });
+
+    revalidateTag("sketches");
 
     return { success: true };
   } catch (error) {

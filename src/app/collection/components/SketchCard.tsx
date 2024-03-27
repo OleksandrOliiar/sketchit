@@ -9,7 +9,7 @@ type Props = {
   createdAt: Date;
 };
 
-export default function SketchCard({ createdAt, prompt, results }: Props) {
+export default function SketchCard({ id, createdAt, prompt, results }: Props) {
   return (
     <div>
       <div className="mb-5 flex items-center justify-between">
@@ -20,7 +20,7 @@ export default function SketchCard({ createdAt, prompt, results }: Props) {
           </span>
         </h3>
         <div className="flex items-center gap-3">
-          <DeleteSketchButton sketchId="" />
+          <DeleteSketchButton sketchId={id} />
         </div>
       </div>
       <div className="grid grid-cols-4 gap-4">
