@@ -1,30 +1,24 @@
-import { getUser } from "@/common/utils/auth";
-import { redirect } from "next/navigation";
-import { getUserSketches } from "./actions";
-import { SketchCard } from "./components";
+import { Suspense } from "react";
+import { Sketches, SearchInput } from "./components";
 
-export default async function Collection() {
-  const { user } = await getUser();
+type Props = {
+  searchParams: {
+    search: string | string[] | undefined;
+  };
+};
 
-  if (!user) {
-    redirect("/auth/sign-in");
-  }
-
-  const userSketches = await getUserSketches(user.id);
+export default async function Collection({ searchParams: { search } }: Props) {
+  const prompt = search ? (Array.isArray(search) ? search[0] : search) : "";
 
   return (
     <div className="app-container pb-24 pt-32">
-      <div>
-        {userSketches.map(({ id, results, prompt, ...data }) => (
-          <SketchCard
-            key={id}
-            id={id}
-            prompt={prompt ?? ""}
-            results={results ?? []}
-            {...data}
-          />
-        ))}
+      <h1 className="mb-5">Collection</h1>
+      <div className="mb-10">
+        <SearchInput />
       </div>
+      <Suspense fallback={"loading"}>
+        <Sketches prompt={prompt} />
+      </Suspense>
     </div>
   );
 }
