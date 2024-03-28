@@ -30,7 +30,7 @@ export default function DeleteSketchButton({ sketchId }: Props) {
 
   const handleDelete = () =>
     startTransition(async () => {
-      const result = await deleteSketch(sketchId);
+      const result = await deleteSketch({ sketchId });
 
       if (result.success) {
         toast.success("Deleted successfully");

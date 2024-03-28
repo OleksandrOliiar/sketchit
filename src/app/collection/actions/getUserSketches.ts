@@ -19,6 +19,7 @@ export const getUserSketches = unstable_cache(
           createdAt: true,
           prompt: true,
           results: true,
+          isPublic: true,
         },
         orderBy: (sketch, { desc }) => desc(sketch.createdAt),
       });

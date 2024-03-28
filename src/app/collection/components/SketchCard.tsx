@@ -1,15 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import DeleteSketchButton from "./DeleteSketchButton";
+import ToggleVisibilityButton from "./ToggleVisibilityButton";
 
 type Props = {
   id: string;
   prompt: string;
   results: string[];
   createdAt: Date;
+  isPublic: boolean;
 };
 
-export default function SketchCard({ id, createdAt, prompt, results }: Props) {
+export default function SketchCard({
+  id,
+  createdAt,
+  prompt,
+  results,
+  isPublic,
+}: Props) {
   return (
     <div>
       <div className="mb-5 flex items-center justify-between">
@@ -20,6 +28,7 @@ export default function SketchCard({ id, createdAt, prompt, results }: Props) {
           </span>
         </h3>
         <div className="flex items-center gap-3">
+          <ToggleVisibilityButton sketchId={id} isPublic={isPublic} />
           <DeleteSketchButton sketchId={id} />
         </div>
       </div>

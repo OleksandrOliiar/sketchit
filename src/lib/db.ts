@@ -29,7 +29,7 @@ export const sketch = pgTable("sketch", {
   prompt: text("prompt").notNull(),
   results: text("results").array(4).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  isPublic: boolean("is_public").default(false),
+  isPublic: boolean("is_public").default(false).notNull(),
 });
 
 const sql = neon(env.DATABASE_URL);

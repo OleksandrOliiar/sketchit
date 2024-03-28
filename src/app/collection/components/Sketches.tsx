@@ -18,12 +18,10 @@ export default async function Sketches({ prompt }: Props) {
 
   return (
     <div className="flex flex-col gap-10">
-      {userSketches.map(({ id, results, prompt, ...data }) => (
+      {userSketches.map(({ id, ...data }) => (
         <SketchCard
           key={id}
           id={id}
-          prompt={prompt}
-          results={results}
           {...data}
         />
       ))}
