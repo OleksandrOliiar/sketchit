@@ -22,8 +22,8 @@ export default async function Sketches({ prompt }: Props) {
         <SketchCard
           key={id}
           id={id}
-          prompt={prompt ?? ""}
-          results={results ?? []}
+          prompt={prompt}
+          results={results}
           {...data}
         />
       ))}

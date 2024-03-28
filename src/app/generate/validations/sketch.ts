@@ -7,6 +7,7 @@ export const createSketchSchema = z.object({
   width: z.number(),
   height: z.number(),
   numOutputs: z.number().min(1).max(4),
+  isPublic: z.boolean().default(false)
 });
 
 export type createSketchFields = z.infer<typeof createSketchSchema>;

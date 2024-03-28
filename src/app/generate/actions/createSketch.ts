@@ -23,7 +23,7 @@ export const createSketch = async (data: Props) => {
     return { success: false, error: parsed.error.toString() };
   }
 
-  const { prompt, height, width, image, numOutputs } = parsed.data;
+  const { prompt, height, width, image, numOutputs, isPublic } = parsed.data;
 
   try {
     const { user } = await getUser();
@@ -33,7 +33,7 @@ export const createSketch = async (data: Props) => {
       "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
       {
         input: {
-          image,
+          // image,
           width,
           height,
           prompt,
@@ -52,6 +52,7 @@ export const createSketch = async (data: Props) => {
       prompt,
       results: output,
       userId: user.id,
+      isPublic,
     });
 
     revalidateTag("sketches");

@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Checkbox,
   Form,
   FormControl,
   FormField,
@@ -36,6 +37,7 @@ export default function CreateSketchForm() {
       height: 768,
       width: 768,
       numOutputs: 1,
+      isPublic: false,
     },
   });
 
@@ -144,6 +146,23 @@ export default function CreateSketchForm() {
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="isPublic"
+          render={({ field }) => (
+            <FormItem className="mb-7 flex flex-row items-center space-x-4 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormLabel>
+                Make results public
+              </FormLabel>
+            </FormItem>
+          )}
+        />
         <div className="flex items-center gap-5">
           <Button size="lg" disabled={isSubmitting}>
             Generate

@@ -9,3 +9,4 @@ export * from "./Slider";
 export * from "./Tooltip";
 export * from "./Select";
 export * from "./AlertDialog";
+export * from "./Checkbox";
