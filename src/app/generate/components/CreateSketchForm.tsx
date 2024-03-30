@@ -21,17 +21,26 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { ReactSketchCanvasRef } from "react-sketch-canvas";
 import Canvas from "./Canvas";
-import { createSketchFields, createSketchSchema } from "../validations/sketch";
+import {
+  CreateSketchFields,
+  generateSketchSchema,
+} from "../validations";
 import { createSketch } from "../actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function CreateSketchForm() {
+type Props = {
+  credits: number;
+};
+
+const numOuputValues = [1, 2, 3, 4];
+
+export default function CreateSketchForm({ credits }: Props) {
   const router = useRouter();
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
 
-  const form = useForm<createSketchFields>({
-    resolver: zodResolver(createSketchSchema),
+  const form = useForm<CreateSketchFields>({
+    resolver: zodResolver(generateSketchSchema({ maxNumOutputs: credits })),
     defaultValues: {
       prompt: "",
       height: 768,
@@ -41,7 +50,7 @@ export default function CreateSketchForm() {
     },
   });
 
-  async function onSubmit(data: createSketchFields) {
+  async function onSubmit(data: CreateSketchFields) {
     if (!canvasRef.current) return;
 
     const image = await canvasRef.current.exportImage("jpeg");
@@ -100,10 +109,13 @@ export default function CreateSketchForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="max-w-[125px]">
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
+                  {numOuputValues
+                    .filter((value) => value <= credits)
+                    .map((value) => (
+                      <SelectItem key={value} value={`${value}`}>
+                        {value}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -157,14 +169,12 @@ export default function CreateSketchForm() {
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <FormLabel>
-                Make results public
-              </FormLabel>
+              <FormLabel>Make results public</FormLabel>
             </FormItem>
           )}
         />
         <div className="flex items-center gap-5">
-          <Button size="lg" disabled={isSubmitting}>
+          <Button size="lg" disabled={isSubmitting || credits === 0}>
             Generate
           </Button>
           {isSubmitting && (
@@ -172,6 +182,7 @@ export default function CreateSketchForm() {
               (This may take a few seconds)
             </span>
           )}
+          {credits === 0 && <span>Not enough credits</span>}
         </div>
       </form>
     </Form>

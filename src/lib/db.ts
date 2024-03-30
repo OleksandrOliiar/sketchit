@@ -1,13 +1,20 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { env } from "@/common/const";
-import { text, pgTable, timestamp, boolean } from "drizzle-orm/pg-core";
+import {
+  text,
+  pgTable,
+  timestamp,
+  boolean,
+  integer,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   username: text("username").notNull().unique(),
   github_id: text("github_id").unique(),
   hashed_password: text("hashed_password").notNull(),
+  credits: integer("credits").default(5).notNull(),
 });
 
 export const session = pgTable("session", {

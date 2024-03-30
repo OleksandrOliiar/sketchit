@@ -1,13 +1,21 @@
 import { z } from "zod";
 
-export const createSketchSchema = z.object({
-  prompt: z.string().min(2, {
-    message: "Enter at least 2 characters",
-  }),
-  width: z.number(),
-  height: z.number(),
-  numOutputs: z.number().min(1).max(4),
-  isPublic: z.boolean().default(false)
-});
+type Props = {
+  maxNumOutputs: number;
+};
 
-export type createSketchFields = z.infer<typeof createSketchSchema>;
+export const generateSketchSchema = ({ maxNumOutputs }: Props) => {
+  return z.object({
+    prompt: z.string().min(2, {
+      message: "Enter at least 2 characters",
+    }),
+    width: z.number(),
+    height: z.number(),
+    numOutputs: z.number().min(1).max(maxNumOutputs),
+    isPublic: z.boolean().default(false),
+  });
+};
+
+export type CreateSketchFields = z.infer<
+  ReturnType<typeof generateSketchSchema>
+>;

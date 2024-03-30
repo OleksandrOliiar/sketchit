@@ -1,33 +1,42 @@
 "use server";
 
 import { z } from "zod";
-import { createSketchSchema } from "../validations/sketch";
+import { CreateSketchFields, generateSketchSchema } from "../validations";
 import { replicate } from "../lib/replicate";
 import { generateId } from "lucia";
-import { db, sketch } from "@/lib/db";
+import { db, sketch, user } from "@/lib/db";
 import { getUser } from "@/common/utils/auth";
 import { revalidateTag } from "next/cache";
+import { AnyColumn, eq, sql } from "drizzle-orm";
 
-const schema = createSketchSchema.merge(
-  z.object({
-    image: z.string(),
-  }),
-);
+const decrement = (column: AnyColumn, value = 1) => {
+  return sql`${column} - ${value}`;
+};
 
-type Props = z.infer<typeof schema>;
+type Props = CreateSketchFields & {
+  image: string;
+};
 
 export const createSketch = async (data: Props) => {
-  const parsed = schema.safeParse(data);
-
-  if (!parsed.success) {
-    return { success: false, error: parsed.error.toString() };
-  }
-
-  const { prompt, height, width, image, numOutputs, isPublic } = parsed.data;
-
   try {
-    const { user } = await getUser();
-    if (!user) throw new Error("Anuthorized");
+    const { user: currentUser } = await getUser();
+    if (!currentUser) throw new Error("Anuthorized");
+
+    const { id: currentUserId, credits } = currentUser;
+
+    const schema = generateSketchSchema({ maxNumOutputs: credits }).merge(
+      z.object({
+        image: z.string(),
+      }),
+    );
+
+    const parsed = schema.safeParse(data);
+
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.toString() };
+    }
+
+    const { prompt, height, width, image, numOutputs, isPublic } = parsed.data;
 
     const output = (await replicate.run(
       "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
@@ -51,9 +60,16 @@ export const createSketch = async (data: Props) => {
       id: sketchId,
       prompt,
       results: output,
-      userId: user.id,
+      userId: currentUserId,
       isPublic,
     });
+
+    await db
+      .update(user)
+      .set({
+        credits: decrement(user.credits, numOutputs),
+      })
+      .where(eq(user.id, currentUserId));
 
     revalidateTag("sketches");
 
