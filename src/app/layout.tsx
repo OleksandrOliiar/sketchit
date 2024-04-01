@@ -4,6 +4,7 @@ import { Providers } from "@/providers";
 import { Header } from "./components/Header";
 
 import "./globals.css";
+import "@uploadthing/react/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

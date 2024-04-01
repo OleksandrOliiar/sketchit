@@ -12,6 +12,8 @@ export const env = createEnv({
     "50_CREDITS_PRODUCT_ID": z.string(),
     "100_CREDITS_PRODUCT_ID": z.string(),
     "250_CREDITS_PRODUCT_ID": z.string(),
+    UPLOADTHING_SECRET: z.string(),
+    UPLOADTHING_APP_ID: z.string(),
   },
   client: {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),

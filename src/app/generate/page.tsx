@@ -10,7 +10,7 @@ export default async function Sketch() {
   }
 
   return (
-    <div className="app-container pt-32 pb-24">
+    <div className="app-container pb-24 pt-32">
       <CreateSketchForm credits={user.credits} />
     </div>
   );

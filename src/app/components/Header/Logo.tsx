@@ -4,7 +4,7 @@ export default function Logo() {
   return (
     <Link href="/">
       <h2 className="font-bold">
-        Sketch<span className="text-primary">IT</span>
+        B<span className="text-primary">Img</span>
       </h2>
     </Link>
   );
