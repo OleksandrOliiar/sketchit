@@ -7,11 +7,7 @@ import { generateId } from "lucia";
 import { db, sketch, user } from "@/lib/db";
 import { getUser } from "@/common/utils/auth";
 import { revalidateTag } from "next/cache";
-import { AnyColumn, eq, sql } from "drizzle-orm";
-
-const decrement = (column: AnyColumn, value = 1) => {
-  return sql`${column} - ${value}`;
-};
+import { eq, sql } from "drizzle-orm";
 
 type Props = CreateSketchFields & {
   image: string;
@@ -67,7 +63,7 @@ export const createSketch = async (data: Props) => {
     await db
       .update(user)
       .set({
-        credits: decrement(user.credits, numOutputs),
+        credits: sql`${user.credits} - ${numOutputs}`,
       })
       .where(eq(user.id, currentUserId));
 

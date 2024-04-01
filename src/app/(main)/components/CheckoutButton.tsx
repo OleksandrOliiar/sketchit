@@ -8,7 +8,7 @@ export default function CheckoutButton() {
   const handleClick = async () => {
     const result = await createCheckoutSession({ credits: 50 });
 
-    if (!result.success || !result.data || result.data.url === null) {
+    if (!result.success || !result.data || !result.data.url) {
       toast.error("Failed to create checkout session");
       return;
     }
