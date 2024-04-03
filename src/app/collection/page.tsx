@@ -12,7 +12,7 @@ export default async function Collection({ searchParams: { search } }: Props) {
 
   return (
     <div className="app-container pb-24 pt-32">
-      <h1 className="mb-5">Collection</h1>
+      <h1 className="mb-14 text-center">Collection</h1>
       <div className="mb-10">
         <SearchInput />
       </div>

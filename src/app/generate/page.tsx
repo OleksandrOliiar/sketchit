@@ -22,7 +22,7 @@ export default async function Sketch() {
   }
 
   return (
-    <div className="app-container flex justify-center pb-24 pt-32">
+    <div className="app-container flex justify-center pb-24 pt-48">
       <div className="w-full max-w-[600px]">
         <h3 className="mb-14 text-center">Generate Image</h3>
         <GenerateImageForm credits={user.credits} />

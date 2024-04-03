@@ -1,5 +1,4 @@
 import { Button } from "@/ui";
-import Logo from "./Logo";
 import ModeToggle from "./ModeToggle";
 import Link from "next/link";
 import { getUser } from "@/common/utils/auth";
@@ -11,13 +10,34 @@ export default async function Header() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-background py-6">
       <div className="app-container flex items-center justify-between">
-        <Logo />
+        <div className="flex items-center gap-5">
+          <Link
+            href="/community"
+            className="font-semibold transition-colors hover:text-primary"
+          >
+            Community
+          </Link>
+          <Link
+            href="/generate"
+            className="font-semibold transition-colors hover:text-primary"
+          >
+            Generate
+          </Link>
+          {user && (
+            <Link
+              href="/collection"
+              className="font-semibold transition-colors hover:text-primary"
+            >
+              Collection
+            </Link>
+          )}
+        </div>
         <div className="flex items-center gap-3">
-          <ModeToggle />
           {user ? (
             <>
+              <span className="mr-2">({user.credits} credits)</span>
               <Link href="/generate">
-                <Button>Generate</Button>
+                <Button>Buy credits</Button>
               </Link>
               <form action={signout}>
                 <Button variant="secondary">Sign out</Button>
@@ -33,6 +53,7 @@ export default async function Header() {
               </Link>
             </>
           )}
+          <ModeToggle />
         </div>
       </div>
     </header>
