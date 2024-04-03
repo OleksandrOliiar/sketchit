@@ -1,1 +1,1 @@
-export { createSketch } from "./createSketch"
+export * from "./genarate"

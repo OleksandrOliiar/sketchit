@@ -1,1 +1,1 @@
-export { default as CreateSketchForm } from "./CreateSketchForm";
+export { default as GenerateImageForm } from "./GenerateImageForm";

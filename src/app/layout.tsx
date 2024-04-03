@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/providers";
 import { Header } from "./components/Header";
+import { extractRouterConfig } from "uploadthing/server";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { fileRouter } from "@/lib/uploadThing";
 
 import "./globals.css";
 import "@uploadthing/react/styles.css";
@@ -21,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)} />
         <Providers>
           <div>
             <Header />
