@@ -1,1 +1,2 @@
-export { createCheckoutSession } from "./checkout";
+export { createCheckoutSession } from "./createCheckoutSession";
+export { getProducts } from "./getProducts";

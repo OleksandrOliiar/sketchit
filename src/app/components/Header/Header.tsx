@@ -36,7 +36,7 @@ export default async function Header() {
           {user ? (
             <>
               <span className="mr-2">({user.credits} credits)</span>
-              <Link href="/generate">
+              <Link href="/#buy_credits">
                 <Button>Buy credits</Button>
               </Link>
               <form action={signout}>

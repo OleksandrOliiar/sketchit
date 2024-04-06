@@ -1,15 +1,15 @@
 "use server";
 
 import { getUser } from "@/common/utils/auth";
-import { stripeProducts } from "../const";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
+import { env } from "@/common/const";
 
 type Props = {
-  credits: keyof typeof stripeProducts;
+  priceId: string;
 };
 
-export const createCheckoutSession = async ({ credits }: Props) => {
+export const createCheckoutSession = async ({ priceId }: Props) => {
   try {
     const { user } = await getUser();
 
@@ -17,21 +17,21 @@ export const createCheckoutSession = async ({ credits }: Props) => {
       throw new Error("You must be logged in to checkout");
     }
 
-    const priceId = stripeProducts[credits];
-
-    if (!priceId) {
-      throw new Error("Price id not found");
-    }
-
     const headerList = headers();
     const origin = headerList.get("origin");
+
+    const stripeProducts = {
+      [env["50_CREDITS_PRODUCT_ID"]]: 50,
+      [env["100_CREDITS_PRODUCT_ID"]]: 100,
+      [env["250_CREDITS_PRODUCT_ID"]]: 250,
+    };
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
       metadata: {
         userId: user.id,
-        credits,
+        credits: stripeProducts[priceId],
       },
       line_items: [
         {
