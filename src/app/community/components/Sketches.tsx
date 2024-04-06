@@ -5,6 +5,12 @@ import Image from "next/image";
 export default async function Sketches() {
   const sketches = await getPublicSketches();
 
+  if (!sketches.length) {
+    return (
+      <p className="text-center text-muted-foreground">No results found</p>
+    );
+  }
+
   return (
     <div className="grid grid-cols-4 gap-4">
       {sketches.map(({ id, results, prompt }) => (

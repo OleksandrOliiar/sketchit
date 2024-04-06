@@ -1,5 +1,6 @@
 "use server";
 
+import { tags } from "@/common/const";
 import { db } from "@/lib/db";
 import { unstable_cache } from "next/cache";
 
@@ -29,8 +30,8 @@ export const getUserSketches = unstable_cache(
       throw new Error("Failed to get user sketches");
     }
   },
-  ["sketches"],
+  [tags.collection],
   {
-    tags: ["sketches"],
+    tags: [tags.collection],
   },
 );

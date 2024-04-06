@@ -7,6 +7,7 @@ import { db, sketch, user } from "@/lib/db";
 import { getUser } from "@/common/utils/auth";
 import { revalidateTag } from "next/cache";
 import { eq, sql } from "drizzle-orm";
+import { tags } from "@/common/const";
 
 export const generate = async (data: GenerateFields) => {
   try {
@@ -60,7 +61,11 @@ export const generate = async (data: GenerateFields) => {
       })
       .where(eq(user.id, currentUserId));
 
-    revalidateTag("sketches");
+    revalidateTag(tags.collection);
+
+    if (isPublic) {
+      revalidateTag(tags.community);
+    }
 
     return { success: true };
   } catch (error) {
